@@ -17,10 +17,10 @@ jobs:
       uses: thedoctor0/zip-release@main
       with:
         type: 'zip'
-        filename: 'display_panels.${{ steps.get_version.outputs.VERSION }}.mastlib'
+        filename: '${{ github.event.repository.owner.name }}.${{ github.event.repository.name }}.data_panels.${{ steps.get_version.outputs.VERSION }}.mastlib'
         #directory: 'sbs_utils'
         #exclusions: 'LICENSE. *.* .* *. *.git* /docs/* /mock/* /typings/* /sphinx/* /tests/* *.py .nojekyll'
-        path: "display_panels"
+        path: "data_panels"
 
     
     - name: Upload Release
