@@ -1,0 +1,17 @@
+# This is a mission script to test the data panels add on
+
+PLAYER_CREATE_DEFAULT = False
+PLAYER_COUNT = 1
+
+
+//shared/signal/create_player_ships
+    shared player = to_object(player_spawn(0, 0, 0, "Artemis", "tsn", "tsn_light_cruiser"))
+    ->END
+
+
+@map/test "Test Map"
+" a map to test with
+    npc_spawn(*Vec3(1000,0,1000), "DS 1", "tsn, station", "starbase_command", "behav_station" )
+    docking_set_docking_logic(player.id, role(player.side) & role("station"), docking_dock_with_friendly_station)
+
+

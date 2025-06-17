@@ -1,0 +1,31 @@
+name: Create Archive
+on: 
+  push:
+    tags:
+      - "*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set env version
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+      
+    - uses: actions/checkout@master
+    - name: Archive autoplay addon
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: 'displaypanels.${{ steps.get_version.outputs.VERSION }}.mastlib'
+        #directory: 'sbs_utils'
+        #exclusions: 'LICENSE. *.* .* *. *.git* /docs/* /mock/* /typings/* /sphinx/* /tests/* *.py .nojekyll'
+        path: "displaypanels"
+
+    
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "*.${{ steps.get_version.outputs.VERSION }}.*"
+        token: ${{ secrets.GITHUB_TOKEN }}
+
