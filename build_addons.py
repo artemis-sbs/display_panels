@@ -8,7 +8,7 @@ skip =  {"__pycache__"}
 version = os.environ.get('VERSION')
 
 
-def zipdir(folder_path, ext="mastlib"):
+def zipdir(folder_path, add_on, ext="mastlib"):
     # try: 
     #     os.mkdir('.addons')
     # except Exception:
@@ -16,7 +16,7 @@ def zipdir(folder_path, ext="mastlib"):
     # finally:
     #     pass
 
-    with zipfile.ZipFile(f"../__lib__/artemis-sbs.DisplayPanels.{folder_path}.{version}.{ext}", "w") as zf:
+    with zipfile.ZipFile(f"../__lib__/artemis-sbs.{add_on}.{folder_path}.{version}.{ext}", "w") as zf:
         for root, subdirs, files in os.walk(folder_path):
             p = pathlib.Path(root)
             arc_dirname = str(pathlib.Path(*p.parts[1:]))
@@ -34,5 +34,14 @@ def zipdir(folder_path, ext="mastlib"):
                 zf.write(file_path, archive_path)
                 #zf.write(os.path.join(root, filename), arcname=os.path.join(arc_dirname, filename))
 
-zipdir("display_panels")
+script_path = os.path.abspath(__file__)
+script_dir = os.path.dirname(script_path)
+script_dir_base = os.path.basename(script_dir)
+fu = [f.path for f in os.scandir(script_dir) if f.is_dir()]
+for root in fu:
+    #zipdir("display_panels")
+    if os.path.exists(root+"/__init__.mast"):
+        basename = os.path.basename(root)
+        print(basename) #  + " "+ script_dir_base)
+        zipdir(basename, script_dir_base)
 
